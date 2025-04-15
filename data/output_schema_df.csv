@@ -1,14 +1,14 @@
 ,name,position,height,weight,feature_1,feature_2,feature_3,actual_salary,predicted_salary
-0,Justin Jefferson,WR,73,195,70.2,10,2,16.0,15.3
-1,Tyreek Hill,WR,70,191,72.8,12,1,18.0,17.5
-2,Davante Adams,WR,73,215,68.9,14,3,17.0,16.4
-3,Stefon Diggs,WR,72,191,69.7,11,2,15.5,14.8
-4,Ja'Marr Chase,WR,72,201,67.5,9,2,13.0,13.6
-5,Amon-Ra St. Brown,WR,73,197,71.3,10,1,11.5,12.0
-6,CeeDee Lamb,WR,74,200,68.1,8,2,13.5,13.1
-7,DK Metcalf,WR,76,235,64.8,7,3,11.0,10.2
-8,Garrett Wilson,WR,72,192,66.9,6,2,7.0,8.3
-9,Chris Olave,WR,73,187,65.5,5,2,6.5,7.1
+0,Josh Allen,QB,77,237,66.3,35,12,43.0,41.5
+1,Patrick Mahomes,QB,75,230,67.2,41,9,50.0,48.7
+2,Joe Burrow,QB,76,221,68.2,34,11,46.0,44.1
+3,Jalen Hurts,QB,73,223,65.1,28,10,42.5,39.9
+4,Justin Herbert,QB,78,236,66.7,30,8,40.0,38.2
+5,Lamar Jackson,QB,74,212,64.5,27,9,38.0,36.5
+6,Tua Tagovailoa,QB,73,217,67.8,29,10,37.5,37.0
+7,Trevor Lawrence,QB,78,213,65.9,25,12,35.0,34.4
+8,Dak Prescott,QB,74,228,66.0,26,13,36.0,35.1
+9,Kirk Cousins,QB,75,220,65.4,33,9,38.5,37.8
 10,Christian McCaffrey,RB,71,205,52.4,21,2,16.0,15.2
 11,Derrick Henry,RB,75,247,48.3,18,3,15.0,14.1
 12,Saquon Barkley,RB,72,232,49.1,10,2,11.0,10.5
@@ -19,3 +19,13 @@
 17,Bijan Robinson,RB,72,215,50.1,7,1,6.0,7.1
 18,Jonathan Taylor,RB,70,226,49.7,10,3,10.5,10.0
 19,Breece Hall,RB,73,220,48.9,8,2,5.5,6.3
+20,Justin Jefferson,WR,73,195,70.2,10,2,16.0,15.3
+21,Tyreek Hill,WR,70,191,72.8,12,1,18.0,17.5
+22,Davante Adams,WR,73,215,68.9,14,3,17.0,16.4
+23,Stefon Diggs,WR,72,191,69.7,11,2,15.5,14.8
+24,Ja'Marr Chase,WR,72,201,67.5,9,2,13.0,13.6
+25,Amon-Ra St. Brown,WR,73,197,71.3,10,1,11.5,12.0
+26,CeeDee Lamb,WR,74,200,68.1,8,2,13.5,13.1
+27,DK Metcalf,WR,76,235,64.8,7,3,11.0,10.2
+28,Garrett Wilson,WR,72,192,66.9,6,2,7.0,8.3
+29,Chris Olave,WR,73,187,65.5,5,2,6.5,7.1
