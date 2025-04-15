@@ -1,0 +1,21 @@
+,name,position,height,weight,feature_1,feature_2,feature_3,actual_salary,predicted_salary
+0,Justin Jefferson,WR,73,195,70.2,10,2,16.0,15.3
+1,Tyreek Hill,WR,70,191,72.8,12,1,18.0,17.5
+2,Davante Adams,WR,73,215,68.9,14,3,17.0,16.4
+3,Stefon Diggs,WR,72,191,69.7,11,2,15.5,14.8
+4,Ja'Marr Chase,WR,72,201,67.5,9,2,13.0,13.6
+5,Amon-Ra St. Brown,WR,73,197,71.3,10,1,11.5,12.0
+6,CeeDee Lamb,WR,74,200,68.1,8,2,13.5,13.1
+7,DK Metcalf,WR,76,235,64.8,7,3,11.0,10.2
+8,Garrett Wilson,WR,72,192,66.9,6,2,7.0,8.3
+9,Chris Olave,WR,73,187,65.5,5,2,6.5,7.1
+10,Christian McCaffrey,RB,71,205,52.4,21,2,16.0,15.2
+11,Derrick Henry,RB,75,247,48.3,18,3,15.0,14.1
+12,Saquon Barkley,RB,72,232,49.1,10,2,11.0,10.5
+13,Nick Chubb,RB,71,227,50.5,13,1,12.0,11.4
+14,Josh Jacobs,RB,70,220,47.8,12,2,10.0,9.3
+15,Austin Ekeler,RB,70,200,51.2,11,1,9.5,9.7
+16,Tony Pollard,RB,72,210,46.5,9,2,7.0,7.8
+17,Bijan Robinson,RB,72,215,50.1,7,1,6.0,7.1
+18,Jonathan Taylor,RB,70,226,49.7,10,3,10.5,10.0
+19,Breece Hall,RB,73,220,48.9,8,2,5.5,6.3
