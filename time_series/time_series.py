@@ -4,6 +4,8 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from statsmodels.tsa.api import ExponentialSmoothing, SimpleExpSmoothing, Holt
+import pickle
+import os
 
 # Class to run exponential smoothing, and adjust data based on smoothed values, mean, and median
 ## to-do: fix tight end bug due to there not being TE data every year
@@ -78,10 +80,21 @@ class ts_adjustment:
         MAD = MAD.rename(columns = {'abs_diff_from_median': 'MAD'})
         self.data = self.data.merge(MAD, left_on = 'year_signed', right_on = 'year_signed')
         self.data['med_adjusted_apy'] = (self.data['apy'] - self.data['med_apy'])/self.data['MAD']
-        scaler = StandardScaler()
-        apy_array = np.array(self.data['apy'])
-        apy_array = np.reshape(apy_array, (len(self.data),1))
-        self.data['mean_adjusted_apy'] = scaler.fit_transform(apy_array)
+        #medians = self.data.groupby('year_signed', as_index = False).agg({'med_apy': "max"})
+        med_scaler_data = MAD.merge(self.med_salary_by_year, left_on = 'year_signed', right_on = 'year_signed')
+        med_scaler_data.to_csv(f"{self.position}_median_scaler_vals.csv", index = False)
+        #mean scaling by year
+        mean_scaled_data = pd.DataFrame(columns = self.data.columns)
+        for year in np.unique(self.data['year_signed']):
+            year_data = self.data[self.data['year_signed']==year].copy()
+            scaler = StandardScaler()
+            apy_array = np.array(year_data['apy'])
+            apy_array = np.reshape(apy_array, (len(year_data),1))
+            year_data['mean_adjusted_apy'] = scaler.fit_transform(apy_array)
+            mean_scaled_data =pd.concat([mean_scaled_data, year_data])
+            with open(f'{self.position}{year}_mean_scaler.pkl', 'wb') as f:
+                pickle.dump(scaler, f)
+        self.data = mean_scaled_data
         # similar approach to robust z score for time series smoothed data
         self.data = self.data.merge(self.smoothed_values, left_on = 'year_signed', right_on = 'year_signed')
         self.data['abs_diff_from_smooth'] = np.abs(self.data['smoothed_apy']-self.data['apy'])
@@ -89,14 +102,71 @@ class ts_adjustment:
         SAD = SAD.rename(columns = {'abs_diff_from_smooth': 'SAD'})
         self.data = self.data.merge(SAD, left_on = 'year_signed', right_on = 'year_signed')
         self.data['smooth_adjusted_apy'] = (self.data['apy'] - self.data['smoothed_apy'])/self.data['SAD']
+        #smoothed_vals = self.data.groupby('year_signed', as_index = False).agg({'smoothed_apy': "max"})
+        smooth_scaler_data = SAD.merge(self.smoothed_values,  left_on = 'year_signed', right_on = 'year_signed')
+        smooth_scaler_data.to_csv(f'{self.position}_smooth_scaler_vals.csv', index = False)
         #print(self.data.dtypes)
         return self.data[['player','year_signed', 'apy','med_adjusted_apy', 'mean_adjusted_apy', 'smooth_adjusted_apy']]
 
+class revert:
+    def __init__(self, data,year = 2025, position=None):
+        assert 'year_signed' in data.columns.values, "make sure your schema has 'year_signed' in it"
+        assert 'predicted_salary' in data.columns.values, "make sure your schema has 'predicted_salary' in it"
+        self.data = data
+        self.year = year
+        yearm1 = year -1
+        if position in ['QB', 'RB', 'WR', 'TE']:
+            if year == 2025:
+                scaler =  f'{position}{yearm1}_mean_scaler.pkl'
+                assert scaler in os.listdir(), 'check that you have a mean scaler pickle file in your directory'
+            else:
+                scaler = f'{position}{year}_mean_scaler.pkl'
+                assert f'{position}{year}_mean_scaler.pkl' in os.listdir(), 'check that you have a mean scaler pickle file in your directory'
+            assert f'{position}_median_scaler_vals.csv' in os.listdir(), "check that you have a median scaler csv in your directory"
+            assert f'{position}_smooth_scaler_vals.csv' in os.listdir(), 'check that you have a smooth scaler csv in your directory'
+            with open(scaler,'rb') as f:
+                self.mean_scaler = pickle.load(f)
+            self.median_scaler_vals = pd.read_csv(f'{position}_median_scaler_vals.csv')
+            self.smooth_scaler_vals = pd.read_csv(f'{position}_smooth_scaler_vals.csv')
+        else:
+            assert f'Player_mean_scaler.pkl' in os.listdir(), 'check that you have a mean scaler pickle file in your directory'
+            assert f'Player_median_scaler_vals.csv' in os.listdir(), "check that you have a median scaler csv in your directory"
+            assert f'Player_smooth_scaler_vals.csv' in os.listdir(), 'check that you have a smooth scaler csv in your directory'
+            with open(f'Player_mean_scaler.pkl','rb') as f:
+                self.mean_scaler = pickle.load(f)
+            self.median_scaler_vals = pd.read_csv(f'Player_median_scaler_vals.csv')
+            self.smooth_scaler_vals = pd.read_csv(f'Player_smooth_scaler_vals.csv')
+    def unnormalize(self, scaling_type = 'smooth'):
+        assert scaling_type in ['mean', 'median', 'smooth'], 'make sure your scaling type is one of ["mean", "median", "smooth"]'
+        if scaling_type == 'smooth' and self.year == 2025:
+            self.data['year_minus1'] = 2024
+            self.data = self.data.merge(self.smooth_scaler_vals, left_on = 'year_minus1', right_on = 'year_signed', how = 'left')
+            #reference logic for how we originally scaled
+            #self.data['smooth_adjusted_apy'] = (self.data['apy'] - self.data['smoothed_apy'])/self.data['SAD']
+            self.data['reverted_pred_salary'] = (self.data['predicted_salary'] * self.data['SAD']) + self.data['smoothed_apy']
+        elif scaling_type == 'smooth' and self.year != 2025:
+            self.data = self.data.merge(self.smooth_scaler_vals, left_on = 'year_signed', right_on = 'year_signed', how = 'left')
+            self.data['reverted_pred_salary'] = (self.data['predicted_salary'] * self.data['SAD']) + self.data['smoothed_apy']
+        elif scaling_type == 'median' and self.year ==2025:
+            self.data['year_minus1'] = 2024
+            self.data = self.data.merge(self.median_scaler_vals, left_on = 'year_minus1', right_on = 'year_signed', how = 'left')
+            #reference logic to how we originally scaled
+            #self.data['med_adjusted_apy'] = (self.data['apy'] - self.data['med_apy'])/self.data['MAD']
+            self.data['reverted_pred_salary'] = (self.data['predicted_salary'] * self.data['MAD']) + self.data['med_apy']
+        elif scaling_type == 'median' and self.year!=2025:
+            self.data = self.data.merge(self.median_scaler_vals, left_on = 'year_signed', right_on = 'year_signed', how = 'left')
+            self.data['reverted_pred_salary'] = (self.data['predicted_salary'] * self.data['MAD']) + self.data['med_apy']
+        elif scaling_type == 'mean':
+            pred_salary_array = np.array(self.data['predicted_salary'])
+            pred_salary_array = np.reshape(pred_salary_array, (len(self.data),1))
+            self.data['reverted_pred_salary'] = self.mean_scaler.inverse_transform(pred_salary_array)
+        return self.data
+
 ## run logic
-positions = ['QB', 'RB', 'WR']#, 'TE']
-for pos in positions:
-    adjustment = ts_adjustment(salaries, position = pos)
-    adjustment.visualize()
-    adjustment.smoothing(smoothing_level = 0.3)
-    adjusted_salary = adjustment.normalization()
-    adjusted_salary.to_csv(f'{pos}_adjusted_salaries.csv', index = False)
+# positions = ['QB', 'RB', 'WR']#, 'TE']
+# for pos in positions:
+#     adjustment = ts_adjustment(salaries, position = pos)
+#     adjustment.visualize()
+#     adjustment.smoothing(smoothing_level = 0.3)
+#     adjusted_salary = adjustment.normalization()
+#     adjusted_salary.to_csv(f'{pos}_adjusted_salaries.csv', index = False)
