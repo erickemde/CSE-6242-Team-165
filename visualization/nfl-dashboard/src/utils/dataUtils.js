@@ -8,7 +8,13 @@ import Papa from 'papaparse';
  */
 export const loadPlayerDataFromCSV = async (filePath) => {
   try {
+    console.log('Attempting to load CSV from:', filePath);
     const response = await fetch(filePath);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to load CSV: ${response.status} ${response.statusText}`);
+    }
+    
     const csvText = await response.text();
     return parsePlayerData(csvText);
   } catch (error) {

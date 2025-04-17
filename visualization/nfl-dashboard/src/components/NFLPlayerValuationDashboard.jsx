@@ -91,13 +91,14 @@ const NFLPlayerValuationDashboard = () => {
 
   // Process players on component mount
   useEffect(() => {
-    // Uncomment this when your CSV is ready:
+    // Get the base URL based on environment
+    const baseUrl = process.env.PUBLIC_URL || '';
 
-    // Try to load the real CSV data
-    loadPlayerDataFromCSV('./data/output_schema_df.csv')
+    // Try to load the real CSV data with the correct path
+    loadPlayerDataFromCSV(`${baseUrl}/data/output_schema_df.csv`)
       .then((players) => {
         console.log('Loaded player data:', players);
-        setProcessedPlayers(players);
+        setProcessedPlayers(processPlayers(players));
       })
       .catch((error) => {
         console.error('Error loading CSV, falling back to sample data:', error);
