@@ -91,6 +91,8 @@ const NFLPlayerValuationDashboard = () => {
 
   // Process players on component mount
   useEffect(() => {
+    document.title = "NFL Player Valuation Dashboard"; // Set the page title
+
     // Get the base URL based on environment
     const baseUrl = process.env.PUBLIC_URL || '';
 
