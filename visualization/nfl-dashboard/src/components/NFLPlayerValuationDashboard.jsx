@@ -408,25 +408,64 @@ const NFLPlayerValuationDashboard = () => {
         </table>
       </div>
 
-      {/* Selected Players Panel */}
+      {/* Selected Players Panel - Valuation Focused */}
       {selectedPlayers.length > 0 && (
         <div className="bg-white p-4 rounded shadow mb-6">
           <h2 className="font-bold mb-4">Selected Players ({selectedPlayers.length})</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {selectedPlayers.map((player, index) => (
-              <div key={index} className="border rounded p-3 flex justify-between items-center">
-                <div>
-                  <div className="font-medium">{player.name}</div>
-                  <div className="text-sm text-gray-600">{player.position} · ${player.actual_salary}M</div>
+            {selectedPlayers.map((player, index) => {
+              const diff = player.predicted_salary - player.actual_salary;
+
+              return (
+                <div key={index} className="border rounded p-4">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <div className="font-medium">{player.name}</div>
+                      <div className="text-sm text-gray-600">{player.position}</div>
+                    </div>
+                    <span
+                      className="px-2 py-1 rounded text-white text-xs font-bold"
+                      style={{ backgroundColor: player.valuationColor }}
+                    >
+                      {player.valuationCategory}
+                    </span>
+                  </div>
+
+                  {/* Valuation Metrics */}
+                  <div className="space-y-2 mb-3">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Actual Salary:</span>
+                      <span className="font-medium">${player.actual_salary}M</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Predicted Salary:</span>
+                      <span className="font-medium">${player.predicted_salary}M</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Difference:</span>
+                      <span className={diff >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                        {diff >= 0 ? '+' : ''}{diff.toFixed(1)}M
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Difference %:</span>
+                      <span className={diff >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
+                        {diff >= 0 ? '+' : ''}{player.valuationPercent.toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <button
+                      className="text-red-500 hover:text-red-700 text-sm"
+                      onClick={() => togglePlayerSelection(player)}
+                    >
+                      Remove
+                    </button>
+                  </div>
                 </div>
-                <button
-                  className="text-red-500 hover:text-red-700"
-                  onClick={() => togglePlayerSelection(player)}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div className="mt-4 pt-4 border-t">
