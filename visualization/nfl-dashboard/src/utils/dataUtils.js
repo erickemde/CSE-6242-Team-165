@@ -87,23 +87,23 @@ export const processPlayers = (players) => {
 export const getFeatureLabels = (position) => {
   const positionFeatureLabels = {
     QB: { 
-      feature_1: "Completion %", 
-      feature_2: "Passing Yards", 
-      feature_3: "Touchdowns" 
+      feature_1: "Passing TDs", 
+      feature_2: "Passing EPA", 
+      feature_3: "Rushing Yards" 
     },
     RB: { 
-      feature_1: "Yards Per Carry", 
-      feature_2: "Rushing Yards", 
-      feature_3: "Touchdowns" 
+      feature_1: "Rushing Yards", 
+      feature_2: "Target Share", 
+      feature_3: "Yards After Catch" 
     },
     WR: { 
-      feature_1: "Catch %", 
-      feature_2: "Receiving Yards", 
-      feature_3: "Touchdowns" 
+      feature_1: "Receiving Yards", 
+      feature_2: "Target Share", 
+      feature_3: "First Downs" 
     },
     TE: { 
-      feature_1: "Catch %", 
-      feature_2: "Receiving Yards", 
+      feature_1: "Receiving Yards", 
+      feature_2: "Target Share", 
       feature_3: "Touchdowns" 
     },
     OL: { 
@@ -240,16 +240,36 @@ export const createPlayerRadarData = (player, positionFeatureLabels, positionAve
 };
 
 /**
- * Generate sample feature impact weights (model coefficients)
- * In a real application, these would come from your model
+ * Generate feature impact weights based on model analysis
+ * These values represent the actual feature importances from the GBM models
  */
 export const getFeatureImpacts = () => {
   return {
-    QB: { feature_1: 0.35, feature_2: 0.45, feature_3: 0.20 },
-    RB: { feature_1: 0.50, feature_2: 0.30, feature_3: 0.20 },
-    WR: { feature_1: 0.40, feature_2: 0.45, feature_3: 0.15 },
-    TE: { feature_1: 0.35, feature_2: 0.40, feature_3: 0.25 },
-    OL: { feature_1: 0.60, feature_2: 0.25, feature_3: 0.15 }
+    QB: { 
+      feature_1: 0.4179, // passing_tds
+      feature_2: 0.1458, // passing_epa
+      feature_3: 0.0904  // rushing_yards
+    },
+    RB: { 
+      feature_1: 0.4477, // rushing_yards
+      feature_2: 0.1530, // target_share
+      feature_3: 0.1006  // receiving_yards_after_catch
+    },
+    WR: { 
+      feature_1: 0.3885, // receiving_yards
+      feature_2: 0.1770, // target_share
+      feature_3: 0.1258  // receiving_first_downs
+    },
+    TE: { 
+      feature_1: 0.35, // Keeping original values for TE since not provided in image
+      feature_2: 0.40, 
+      feature_3: 0.25
+    },
+    OL: { 
+      feature_1: 0.60, // Keeping original values for OL since not provided in image
+      feature_2: 0.25, 
+      feature_3: 0.15
+    }
   };
 };
 

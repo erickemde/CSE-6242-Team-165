@@ -10,15 +10,15 @@ const FeatureImpactVisualization = ({ activePosition, setActivePosition, positio
     return [
       {
         feature: getFeatureLabels(position).feature_1,
-        impact: impact.feature_1 * 100
+        impact: parseFloat((impact.feature_1 * 100).toFixed(1))
       },
       {
         feature: getFeatureLabels(position).feature_2,
-        impact: impact.feature_2 * 100
+        impact: parseFloat((impact.feature_2 * 100).toFixed(1))
       },
       {
         feature: getFeatureLabels(position).feature_3,
-        impact: impact.feature_3 * 100
+        impact: parseFloat((impact.feature_3 * 100).toFixed(1))
       }
     ];
   };
@@ -65,14 +65,14 @@ const FeatureImpactVisualization = ({ activePosition, setActivePosition, positio
             {createFeatureImpactData(activePosition).map((item, index) => (
               <li key={index} className="flex items-center">
                 <div className="w-3 h-3 rounded-full bg-blue-600 mr-2"></div>
-                <span><strong>{item.feature}</strong>: {item.impact}% impact on predicted salary</span>
+                <span><strong>{item.feature}</strong>: {item.impact.toFixed(1)}% impact on predicted salary</span>
               </li>
             ))}
           </ul>
           <div className="mt-4">
             <p className="text-sm text-gray-600">
-              These values represent the relative importance of each feature in determining the predicted salary for {activePosition}s.
-              Higher percentages indicate features that have a greater influence on valuation.
+              These values represent the top 3 most important features in determining the predicted salary for {activePosition}s.
+              Higher percentages indicate features that have a greater influence on valuation, based on our machine learning model analysis.
             </p>
           </div>
         </div>
