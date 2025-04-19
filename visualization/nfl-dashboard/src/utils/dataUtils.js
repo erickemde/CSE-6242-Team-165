@@ -87,19 +87,19 @@ export const processPlayers = (players) => {
 export const getFeatureLabels = (position) => {
   const positionFeatureLabels = {
     QB: { 
-      feature_1: "Completion %", 
-      feature_2: "Passing Yards", 
-      feature_3: "Touchdowns" 
+      feature_1: "Fantasy Points", 
+      feature_2: "Passing Touchdowns", 
+      feature_3: "Rushing Yards" 
     },
     RB: { 
-      feature_1: "Yards Per Carry", 
+      feature_1: "Fantasy Points", 
       feature_2: "Rushing Yards", 
-      feature_3: "Touchdowns" 
+      feature_3: "Target Share" 
     },
     WR: { 
-      feature_1: "Catch %", 
-      feature_2: "Receiving Yards", 
-      feature_3: "Touchdowns" 
+      feature_1: "Fantasy Points", 
+      feature_2: "Target Share",
+      feature_3: "Receiving Yards"   
     },
     TE: { 
       feature_1: "Catch %", 

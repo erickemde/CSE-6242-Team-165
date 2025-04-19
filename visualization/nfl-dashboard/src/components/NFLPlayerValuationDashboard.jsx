@@ -14,7 +14,7 @@ import {
   getFeatureImpacts
 } from '../utils/dataUtils';
 
-// Generated data based on the output_schema_df.csv structure
+// Generated data based on the dashboard_data.csv structure
 const fakePlayers = generateFakePlayerData()
 
 const NFLPlayerValuationDashboard = () => {
@@ -95,7 +95,7 @@ const NFLPlayerValuationDashboard = () => {
     const baseUrl = process.env.PUBLIC_URL || '';
 
     // Try to load the real CSV data with the correct path
-    loadPlayerDataFromCSV(`${baseUrl}/data/output_schema_df.csv`)
+    loadPlayerDataFromCSV(`${baseUrl}/data/dashboard_data.csv`)
       .then((players) => {
         console.log('Loaded player data:', players);
         setProcessedPlayers(processPlayers(players));
