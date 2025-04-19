@@ -430,31 +430,6 @@ const NFLPlayerValuationDashboard = () => {
                       {player.valuationCategory}
                     </span>
                   </div>
-
-                  {/* Valuation Metrics */}
-                  <div className="space-y-2 mb-3">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Actual Salary:</span>
-                      <span className="font-medium">${player.actual_salary}M</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Predicted Salary:</span>
-                      <span className="font-medium">${player.predicted_salary}M</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Difference:</span>
-                      <span className={diff >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
-                        {diff >= 0 ? '+' : ''}{diff.toFixed(1)}M
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Difference %:</span>
-                      <span className={diff >= 0 ? "text-green-600 font-medium" : "text-red-600 font-medium"}>
-                        {diff >= 0 ? '+' : ''}{player.valuationPercent.toFixed(1)}%
-                      </span>
-                    </div>
-                  </div>
-
                   <div className="text-right">
                     <button
                       className="text-red-500 hover:text-red-700 text-sm"
@@ -467,14 +442,6 @@ const NFLPlayerValuationDashboard = () => {
               );
             })}
           </div>
-
-          <div className="mt-4 pt-4 border-t">
-            <button
-              className="mt-4 w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-            >
-              Export Selected Players
-            </button>
-          </div>
         </div>
       )}
 
@@ -483,34 +450,6 @@ const NFLPlayerValuationDashboard = () => {
         <div className="bg-white p-4 rounded shadow mb-6">
           <h2 className="font-bold mb-4">Player Details: {selectedPlayers[0].name}</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div>
-              <h3 className="font-medium mb-2">Performance Metrics</h3>
-              <table className="w-full">
-                <tbody>
-                  <tr className="border-b">
-                    <td className="py-2 text-gray-600">{getFeatureLabels(selectedPlayers[0].position).feature_1}</td>
-                    <td className="py-2 font-medium text-right">{selectedPlayers[0].feature_1}</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-2 text-gray-600">{getFeatureLabels(selectedPlayers[0].position).feature_2}</td>
-                    <td className="py-2 font-medium text-right">{selectedPlayers[0].feature_2}</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-2 text-gray-600">{getFeatureLabels(selectedPlayers[0].position).feature_3}</td>
-                    <td className="py-2 font-medium text-right">{selectedPlayers[0].feature_3}</td>
-                  </tr>
-                  <tr className="border-b">
-                    <td className="py-2 text-gray-600">Height</td>
-                    <td className="py-2 font-medium text-right">{Math.floor(selectedPlayers[0].height / 12)}'{selectedPlayers[0].height % 12}"</td>
-                  </tr>
-                  <tr>
-                    <td className="py-2 text-gray-600">Weight</td>
-                    <td className="py-2 font-medium text-right">{selectedPlayers[0].weight} lbs</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
             <div>
               <h3 className="font-medium mb-2">Valuation Analysis</h3>
               <div className="bg-gray-100 p-4 rounded">
