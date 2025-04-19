@@ -1,8 +1,28 @@
 // src/components/Dashboard/PlayerDetails.jsx
 // This component shows detailed analysis for a single selected player
 import React from 'react';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Tooltip, ResponsiveContainer } from 'recharts';
+import { getFeatureLabels, calculatePositionAverages, createPlayerRadarData } from '../../utils/dataUtils';
 
 const PlayerDetails = ({ player }) => {
+  // Function to get radar data for a player
+  const getPlayerRadarData = player => {
+    // Get feature labels for this position
+    const featureLabels = getFeatureLabels(player.position);
+
+    // For demo purposes, we'll pass an empty array for averages calculation
+    // In a real implementation, you would pass all players of the same position
+    const positionAverages = {};
+    positionAverages[player.position] = {
+      feature_1: player.feature_1,
+      feature_2: player.feature_2,
+      feature_3: player.feature_3
+    };
+
+    // Use the dataUtils function to create normalized radar data
+    return createPlayerRadarData(player, featureLabels, positionAverages);
+  };
+
   return (
     <div className="bg-white p-4 rounded shadow mb-6">
       <h2 className="font-bold mb-4">Player Details: {player.name}</h2>
@@ -37,6 +57,36 @@ const PlayerDetails = ({ player }) => {
               >
                 {player.valuationCategory}
               </span>
+            </div>
+          </div>
+        </div>
+        
+        {/* Player Feature Radar Chart - Added Here */}
+        <div>
+          <h3 className="font-medium mb-2">Feature Analysis</h3>
+          <div className="bg-gray-100 p-4 rounded">
+            <div className="h-64">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart
+                  outerRadius={90}
+                  data={getPlayerRadarData(player)}
+                >
+                  <PolarGrid />
+                  <PolarAngleAxis dataKey="feature" />
+                  <PolarRadiusAxis domain={[0, 100]} />
+                  <Radar
+                    name={player.name}
+                    dataKey="value"
+                    stroke={player.valuationColor}
+                    fill={player.valuationColor}
+                    fillOpacity={0.6}
+                  />
+                  <Tooltip />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="text-sm text-gray-600 mt-2 text-center px-2">
+              This radar chart shows normalized feature values compared to position average.
             </div>
           </div>
         </div>

@@ -124,7 +124,10 @@ const NFLPlayerValuationDashboard = () => {
       )}
 
       {selectedPlayers.length === 1 && (
-        <PlayerDetails player={selectedPlayers[0]} />
+        <PlayerDetails
+          player={selectedPlayers[0]}
+          allPlayers={processedPlayers} // Pass all players for position average calculation
+        />
       )}
 
       <PositionMarketOverview
