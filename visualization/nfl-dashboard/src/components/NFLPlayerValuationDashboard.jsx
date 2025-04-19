@@ -117,17 +117,18 @@ const NFLPlayerValuationDashboard = () => {
       />
 
       {selectedPlayers.length > 0 && (
-        <SelectedPlayersPanel
-          selectedPlayers={selectedPlayers}
-          togglePlayerSelection={togglePlayerSelection}
-        />
-      )}
-
-      {selectedPlayers.length === 1 && (
-        <PlayerDetails
-          player={selectedPlayers[0]}
-          allPlayers={processedPlayers} // Pass all players for position average calculation
-        />
+        <>
+          <SelectedPlayersPanel
+            selectedPlayers={selectedPlayers}
+            togglePlayerSelection={togglePlayerSelection}
+          />
+          
+          {/* Updated to always display PlayerDetails when players are selected */}
+          <PlayerDetails
+            selectedPlayers={selectedPlayers}
+            allPlayers={processedPlayers} // Pass all players for position average calculation
+          />
+        </>
       )}
 
       <PositionMarketOverview
