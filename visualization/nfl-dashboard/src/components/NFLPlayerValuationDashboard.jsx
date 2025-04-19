@@ -83,8 +83,6 @@ const NFLPlayerValuationDashboard = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [activePosition, setActivePosition] = useState("QB"); // For feature impact visualization
   const [processedPlayers, setProcessedPlayers] = useState([]);
-  const [budget, setBudget] = useState(100); // Default budget in millions
-  const [budgetInput, setBudgetInput] = useState("100");
 
   // Get unique positions
   const positions = [...new Set(processedPlayers.map(player => player.position))];
@@ -118,9 +116,6 @@ const NFLPlayerValuationDashboard = () => {
     return positionMatch && searchMatch;
   });
 
-  // Calculate total selected salary
-  const totalSelectedSalary = selectedPlayers.reduce((sum, player) => sum + player.actual_salary, 0);
-
   // Toggle player selection
   const togglePlayerSelection = player => {
     if (selectedPlayers.find(p => p.name === player.name)) {
@@ -130,26 +125,12 @@ const NFLPlayerValuationDashboard = () => {
     }
   };
 
-  // Update budget
-  const handleBudgetChange = (e) => {
-    setBudgetInput(e.target.value);
-  };
-
-  const handleBudgetSubmit = (e) => {
-    e.preventDefault();
-    const parsedBudget = parseFloat(budgetInput);
-    if (!isNaN(parsedBudget) && parsedBudget > 0) {
-      setBudget(parsedBudget);
-    }
-  };
-
-
   return (
     <div className="p-4 bg-gray-50">
       <h1 className="text-3xl font-bold mb-4 text-gray-800">NFL Player Valuation Dashboard</h1>
 
       {/* Control Panel */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {/* Position Filter */}
         <div className="bg-white p-4 rounded shadow">
           <h2 className="font-bold mb-2 text-center">Position Filter</h2>
@@ -187,54 +168,6 @@ const NFLPlayerValuationDashboard = () => {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
-            </div>
-          </div>
-        </div>
-
-        {/* Budget Setting */}
-        <div className="bg-white p-4 rounded shadow">
-          <h2 className="font-bold mb-2">Budget Setting</h2>
-          <form onSubmit={handleBudgetSubmit} className="flex">
-            <div className="budget-input-container relative flex-grow">
-              <span className="dollar-sign">$</span>
-              <input
-                type="text"
-                className="w-full p-2 border rounded"
-                placeholder="Enter budget in millions"
-                value={budgetInput}
-                onChange={handleBudgetChange}
-              />
-            </div>
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded ml-4"
-              style={{ marginLeft: '4px' }}
-            >
-              Set
-            </button>
-          </form>
-          <div className="mt-2">
-            <div className="flex justify-between">
-              <span>Current Budget:</span>
-              <span className="font-bold">${budget}M</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Selected Players:</span>
-              <span className={totalSelectedSalary > budget ? "font-bold text-red-600" : "font-bold"}>
-                ${totalSelectedSalary.toFixed(1)}M
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span>Remaining:</span>
-              <span className={budget - totalSelectedSalary < 0 ? "font-bold text-red-600" : "font-bold text-green-600"}>
-                ${(budget - totalSelectedSalary).toFixed(1)}M
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-              <div
-                className={`h-2.5 rounded-full ${totalSelectedSalary > budget ? "bg-red-600" : "bg-green-600"}`}
-                style={{ width: `${Math.min(100, (totalSelectedSalary / budget) * 100)}%` }}
-              ></div>
             </div>
           </div>
         </div>
@@ -497,18 +430,6 @@ const NFLPlayerValuationDashboard = () => {
           </div>
 
           <div className="mt-4 pt-4 border-t">
-            <div className="flex justify-between font-bold">
-              <span>Total Selected Salary:</span>
-              <span className={totalSelectedSalary > budget ? "text-red-600" : ""}>
-                ${totalSelectedSalary.toFixed(1)}M
-              </span>
-            </div>
-            <div className="flex justify-between font-bold mt-2">
-              <span>Remaining Budget:</span>
-              <span className={budget - totalSelectedSalary < 0 ? "text-red-600" : "text-green-600"}>
-                ${(budget - totalSelectedSalary).toFixed(1)}M
-              </span>
-            </div>
             <button
               className="mt-4 w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
