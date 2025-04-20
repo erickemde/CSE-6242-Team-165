@@ -41,7 +41,7 @@ class ts_adjustment:
         plt.figure()
         plt.scatter(self.recent_mean_salary_by_year['year_signed'], self.recent_mean_salary_by_year['mean_apy'], label = "Mean Salary since 2010")
         plt.scatter(self.recent_med_salary_by_year['year_signed'], self.recent_med_salary_by_year['med_apy'], label = 'Median Salary since 2010')
-     def smoothing(self, smoothing_level = 0.5):
+    def smoothing(self, smoothing_level = 0.5):
         ## investigate standard double exponential smoothing as well as some others
         ## simple, all means
         years = pd.date_range(start = '1994',\
