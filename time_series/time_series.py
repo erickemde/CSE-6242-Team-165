@@ -44,6 +44,7 @@ class ts_adjustment:
     def smoothing(self, smoothing_level = 0.5):
         ## investigate standard double exponential smoothing as well as some others
         ## simple, all means
+         
         years = pd.date_range(start = '1994',\
         end = '2026', freq = 'YE')
         mean_series = pd.Series(self.mean_salary_by_year['mean_apy'].values, years)
@@ -54,9 +55,9 @@ class ts_adjustment:
         plt.plot(simple_es.fittedvalues, label = "Smoothed Values")
         plt.plot(mean_series, label = "Mean by Year")
         plt.legend()
+        plt.title(f"Exonentially Smoothed and Mean {self.position} Salary (mm USD)")
         self.smoothed_values = pd.DataFrame({'year_signed':simple_es.fittedvalues.index.year.values, 'smoothed_apy': simple_es.fittedvalues})
         plt.figure()
-        plt.title(f"Exonentially Smoothed and Mean {self.position} Salary (mm USD)")
     def normalization(self):
         ## use smoothed and detrended average contract values to normalize indivdual player salaries 
         self.data = self.data.merge(self.med_salary_by_year, left_on = 'year_signed', right_on = 'year_signed')
