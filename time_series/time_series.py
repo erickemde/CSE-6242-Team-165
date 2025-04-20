@@ -12,8 +12,8 @@ import os
 ## to-do: revisit exponential smoothing
 class ts_adjustment:
     def __init__(self, data, position=None):
-        assert position is None or position in ['QB', 'RB', 'WR', 'TE']
-        if position in ['QB', 'RB', 'WR', 'TE']:
+        assert position is None or position in ['QB', 'RB', 'WR']#, 'TE']
+        if position in ['QB', 'RB', 'WR']:#, 'TE']:
             self.data = data[(data['position']==position) & (data['year_signed']>0)]
             self.position = position
         else:
@@ -41,35 +41,23 @@ class ts_adjustment:
         plt.figure()
         plt.scatter(self.recent_mean_salary_by_year['year_signed'], self.recent_mean_salary_by_year['mean_apy'], label = "Mean Salary since 2010")
         plt.scatter(self.recent_med_salary_by_year['year_signed'], self.recent_med_salary_by_year['med_apy'], label = 'Median Salary since 2010')
-    # def detrending(self):
-    #     ## fit univariate linear regression with apy as dependent var and year as indepedent
-    #     ## detrend by subtracting coefficient and intercept value from data
-    #     print('placeholder')
     def smoothing(self, smoothing_level = 0.5):
         ## investigate standard double exponential smoothing as well as some others
         ## simple, all means
+         
         years = pd.date_range(start = '1994',\
         end = '2026', freq = 'YE')
-        #print(self.mean_salary_by_year)
-        #print(years)
         mean_series = pd.Series(self.mean_salary_by_year['mean_apy'].values, years)
-        #print(mean_series)
-        #print(self.mean_salary_by_year['apy'].values)
         simple_es = SimpleExpSmoothing(mean_series).fit(smoothing_level = smoothing_level, optimized = False)
-        #num_samples = len(self.mean_salary_by_year)
-        #what does int in forecast method do?
-        fcast_simple = simple_es.forecast(3)
+        #fcast_simple = simple_es.forecast(3)
         #print(simple_es.initial_values)
         plt.figure()
-        plt.plot(simple_es.fittedvalues)
-        plt.plot(mean_series)
-        #print(simple_es.fittedvalues.index.year.values)
+        plt.plot(simple_es.fittedvalues, label = "Smoothed Values")
+        plt.plot(mean_series, label = "Mean by Year")
+        plt.legend()
+        plt.title(f"Exonentially Smoothed and Mean {self.position} Salary (mm USD)")
         self.smoothed_values = pd.DataFrame({'year_signed':simple_es.fittedvalues.index.year.values, 'smoothed_apy': simple_es.fittedvalues})
         plt.figure()
-        #print(self.smoothed_values.dtypes)
-        #(line1, ) = plt.plot(fcast_simple)
-        ##double, with trend component (aka Holt)
-        #print('placeholder')
     def normalization(self):
         ## use smoothed and detrended average contract values to normalize indivdual player salaries 
         self.data = self.data.merge(self.med_salary_by_year, left_on = 'year_signed', right_on = 'year_signed')
