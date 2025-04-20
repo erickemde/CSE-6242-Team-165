@@ -57,7 +57,7 @@ const NFLPlayerValuationDashboard = () => {
     const baseUrl = process.env.PUBLIC_URL || '';
 
     // Try to load the real CSV data with the correct path
-    loadPlayerDataFromCSV(`${baseUrl}/data/dashboard_data.csv`)
+    loadPlayerDataFromCSV(`${baseUrl}/data/final_dashboard_data.csv`)
       .then((players) => {
         console.log('Loaded player data:', players);
         setProcessedPlayers(processPlayers(players));
