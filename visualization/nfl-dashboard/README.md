@@ -24,10 +24,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository (The repository is private, so you will have to ask permission from wbutin3.):
    ```
-   git clone https://github.com/your-username/nfl-player-valuation-dashboard.git
-   cd nfl-player-valuation-dashboard
+   git clone https://github.com/wbutin3/CSE-6242-Team-165.git
+   cd CSE-6242-Team-165\visualization\nfl-dashboard
    ```
 
 2. Install dependencies:
