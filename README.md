@@ -4,7 +4,7 @@ Group Project for CSE 6242 -- Predicting and Visualizing NFL Player Salary
 
 How to Run / Repo Structure:
 
-  (1) Exponentially smoothed player salaries are created in time-series folder
+  (1) Exponentially smoothed player salaries are created in time-series folder. [time_series_readme.txt](https://github.com/wbutin3/CSE-6242-Team-165/blob/main/time_series/time_series_readme.txt)
 
   (2) Preprocessiing notebooks clean data and join with corresponding adjusted salaries
 
