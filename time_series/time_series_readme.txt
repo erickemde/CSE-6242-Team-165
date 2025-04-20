@@ -12,7 +12,7 @@
 import time_series
 import pandas as pd
 
-pd.read_parquet('historical_contracts.parquet')
+salaries = pd.read_parquet('historical_contracts.parquet')
 
 adjustment = time_series.ts_adjustment(salaries, position = "QB")
 adjustment.visualize()
