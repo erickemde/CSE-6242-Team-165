@@ -1,6 +1,7 @@
 # CSE-6242-Team-165
 Group Project for CSE 6242 -- Predicting and Visualizing NFL Player Salary
 
+This file can be found as the root README.md at https://github.com/wbutin3/CSE-6242-Team-165/
 
 How to Run / Repo Structure:
 
